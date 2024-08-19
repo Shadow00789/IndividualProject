@@ -48,3 +48,45 @@ nav a:hover {
     text-decoration: underline;
     color: #CCCCFF;
 }
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; 
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+h2 {
+    margin-bottom: 70px;
+}
+
+.games {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.game-left, .game-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-left {
+    margin-right: auto;
+    margin-left: 20%;
+}
+
+.game-right {
+    margin-left: auto;
+    margin-right: 20%;
+}
+
+.btn {
+    margin-top: 10px;
+}

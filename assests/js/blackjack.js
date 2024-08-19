@@ -28,9 +28,8 @@ function createDeck() {
     deck = [];
     for (let suit of suits) {
         for (let value of values) {
-            let card = {suit, value};
-            
-             deck.push(card);
+            let card = { suit, value };
+            deck.push(card);
         }
     }
 }
@@ -38,7 +37,7 @@ function createDeck() {
 function shuffleDeck() {
     for (let i = deck.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
+        [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 }
 
@@ -49,6 +48,7 @@ function startGame() {
     dealerHand = [deck.pop(), deck.pop()];
     updateGame();
     enableButtons();
+    status.textContent = "Game started!";
 }
 
 function updateGame() {
@@ -61,6 +61,10 @@ function updateHands() {
     document.getElementById('dealer-cards').innerHTML = dealerHand.map(card => cardHTML(card)).join('');
     document.getElementById('player-score').innerText = `Score: ${calculateScore(playerHand)}`;
     document.getElementById('dealer-score').innerText = `Score: ${calculateScore(dealerHand)}`;
+}
+
+function cardHTML(card) {
+    return `<div class='card'>${card.value} of ${card.suit}</div>`;
 }
 
 function calculateScore(hand) {
@@ -76,7 +80,7 @@ function calculateScore(hand) {
             score += parseInt(card.value, 10);
         }
     }
-    if (hadAce && score > 21) {
+    if (hasAce && score > 21) {
         score -= 10;
     }
     return score;
@@ -118,4 +122,9 @@ function enableButtons() {
 function disableButtons() {
     hitButton.disabled = true;
     standButton.disabled = true;
+}
+
+function endGame(message) {
+    status.textContent = message;
+    disableButtons();
 }
