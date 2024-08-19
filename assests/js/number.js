@@ -1,7 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const randomNumber = Math.floor(Math.random() * 101);
+    let randomNumber;
+    let attempts;
+    let hintsGiven;
+
+    function initializeGame() {
+    randomNumber = Math.floor(Math.random() * 101);
     let attempts = 5;
     let hintsGiven = 0;
+
+    document.getElementById('message').textContent = '';
+    document.getElementById('hints').textContent = '';
+    document.getElementById('guess').value = '';
+    document.getElementById('submit').disabled = false;
+    document.getElementById('guess').disabled = false;
+    document.getElementById('restart').style.display = 'none';
+}
 
 
 document.getElementById('submit').addEventListener('click', () => {
@@ -11,7 +24,7 @@ parseInt(document.getElementById('guess').value);
 document.getElementById('message');
     const hintElem = document.getElementById('hints');
     
-    if (isNaN(userGuess)  || userGuess < 0 || userGuess > 100) {
+    if (isNaN(userGuess) || userGuess < 0 || userGuess > 100) {
         messageElem.textContent = 'Please enter a valid number between 0 and 100.';
         return;
     }
@@ -48,5 +61,10 @@ function generateHint(target, guess) {
 function endGame() {
     document.getElementById('submit').disabled = true;
     document.getElementById('guess').disabled = true;
+    document.getElementById('restart').style.display = 'inline-block';
 }
+
+document.getElementById('restart').addEventListener('click', initializeGame);
+
+    initializeGame();
 });
