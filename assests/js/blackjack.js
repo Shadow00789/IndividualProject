@@ -1,7 +1,5 @@
-const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
-const values = [
-    "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"
-];
+const suits = ["♥", "♦", "♣", "♠"]; // Unicode symbols for suits
+const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
 let deck = [];
 let playerHand = [];
@@ -12,22 +10,14 @@ const dealButton = document.getElementById('deal-button');
 const hitButton = document.getElementById('hit-button');
 const standButton = document.getElementById('stand-button');
 
-dealButton.addEventListener('click', () => {
-    startGame();
-});
-
-hitButton.addEventListener('click', () => {
-    playerHit();
-});
-
-standButton.addEventListener('click', () => {
-    dealerPlays();
-});
+dealButton.addEventListener('click', startGame);
+hitButton.addEventListener('click', playerHit);
+standButton.addEventListener('click', dealerPlays);
 
 function createDeck() {
     deck = [];
     for (let suit of suits) {
-        for (let value of values) {
+        for (let value of values) { 
             let card = { suit, value };
             deck.push(card);
         }
@@ -53,7 +43,6 @@ function startGame() {
 
 function updateGame() {
     updateHands();
-    checkScores();
 }
 
 function updateHands() {
@@ -64,17 +53,24 @@ function updateHands() {
 }
 
 function cardHTML(card) {
-    return `<div class='card'>${card.value} of ${card.suit}</div>`;
+    const suitClass = {
+        "♥": "hearts",
+        "♦": "diamonds",
+        "♣": "clubs",
+        "♠": "spades"
+    }[card.suit];
+
+    return `<div class='card ${suitClass}'><span class='value'>${card.value}</span><span class='suit'>${card.suit}</span></div>`;
 }
 
 function calculateScore(hand) {
     let score = 0;
     let hasAce = false;
     for (let card of hand) {
-        if (card.value === "Ace") {
+        if (card.value === "A") {
             hasAce = true;
             score += 11;
-        } else if (["King", "Queen", "Jack"].includes(card.value)) {
+        } else if (["K", "Q", "J"].includes(card.value)) {
             score += 10;
         } else {
             score += parseInt(card.value, 10);
@@ -95,22 +91,26 @@ function playerHit() {
 }
 
 function dealerPlays() {
+    disableButtons();
     while (calculateScore(dealerHand) < 17) {
         dealerHand.push(deck.pop());
     }
-    updateGame();
+    updateHands();
     determineWinner();
 }
 
 function determineWinner() {
     const playerScore = calculateScore(playerHand);
     const dealerScore = calculateScore(dealerHand);
-    if (dealerScore > 21 || playerScore > dealerScore) {
+
+    if (dealerScore > 21) {
+        endGame('Dealer busts! Player Wins!');
+    } else if (playerScore > dealerScore) {
         endGame('Player Wins!');
     } else if (playerScore < dealerScore) {
         endGame('Dealer Wins!');
     } else {
-        endGame('It\'s a Tie!');
+        endGame("It's a Tie!");
     }
 }
 
@@ -128,3 +128,7 @@ function endGame(message) {
     status.textContent = message;
     disableButtons();
 }
+
+// Initialize the game status
+status.textContent = "Welcome to BlackJack! Click Deal to start.";
+disableButtons();
