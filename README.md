@@ -23,4 +23,4 @@ This is a simple Website that includes a home page with links to the other two w
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Shadow00789/your-repo-name.git
+   git clone https://github.com/Shadow00789/IndividualProjecte.git
